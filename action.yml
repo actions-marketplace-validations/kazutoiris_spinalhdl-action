@@ -1,0 +1,50 @@
+name: "spinalhdl-action"
+description: "GitHub Action to deploy SpinalHDL"
+author: "kazutoiris"
+inputs:
+  TopLevel:
+    required: true
+    description: "The path to the top level, example `mylib.MyTopLevelVerilog`"
+  TopLevelSim:
+    required: true
+    description: "The path to the top level sim, example `mylib.MyTopLevelSim`"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+
+    - run: sudo apt update & sudo apt-get install git make autoconf g++ flex bison verilator -y
+      shell: bash
+
+    - run: sed -i "s/%NAME%/test/g" build.sc
+      shell: bash
+
+    - uses: olafurpg/setup-scala@v10
+      with:
+        java-version: adopt@1.16
+
+    - uses: coursier/cache-action@v5
+
+    - run: sbt test
+      shell: bash
+
+    - run: sbt "runMain ${{ inputs.TopLevelSim }}"
+      shell: bash
+      if: ${{ inputs.TopLevelSim }} != ""
+
+    - run: sbt "runMain ${{ inputs.TopLevel }}"
+      shell: bash
+
+    - run: zip -r all.zip . -x=".git/*"
+      shell: bash
+
+    - run: zip -r verilog.zip *.v
+      shell: bash
+
+    - run: ls -al
+      shell: bash
+
+branding:
+  icon: "refresh-ccw"
+  color: "green"
