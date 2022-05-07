@@ -17,6 +17,9 @@ runs:
     - run: sudo apt update & sudo apt-get install git make autoconf g++ flex bison verilator -y
       shell: bash
 
+    - name: Install oss-cad-suite
+      uses: kazutoiris/yosys-action@v1
+
     - run: sed -i "s/%NAME%/test/g" build.sc
       shell: bash
 

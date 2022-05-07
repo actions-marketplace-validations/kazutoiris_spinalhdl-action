@@ -3,6 +3,12 @@
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
+## Changelog
+
+* v1 support `SpinalHDL < 1.7.0`, and unsupport `Formal Verification` feature.
+
+* v2 support `SpinalHDL >= 1.7.0`, and support `Formal Verification` feature now.
+
 ## Quick Usage
 
 1. Create `.github/workflows/main.yml`
@@ -20,7 +26,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: kazutoiris/spinalhdl-action@v1
+      - uses: kazutoiris/spinalhdl-action@v2
         with:
           TopLevel: mylib.MyTopLevelVerilog
           TopLevelSim: mylib.MyTopLevelSim
